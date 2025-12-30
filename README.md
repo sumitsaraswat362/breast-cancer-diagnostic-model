@@ -76,6 +76,16 @@ Multiple machine learning models were evaluated using **identical data splits an
 
 ![Model Comparison](results/model_comparison.png)
 
+### SHAP Feature Importance (Random Forest)
+
+SHAP (SHapley Additive exPlanations) was used to interpret the Random Forest
+model by quantifying the contribution of each feature to malignant
+predictions. The summary plot highlights clinically relevant features such
+as concavity, radius, and texture as dominant drivers of malignancy
+classification.
+
+![SHAP Summary](results/shap_summary_random_forest_malignant.png)
+
 ### Key Findings
 
 While **Random Forest** achieved the highest overall accuracy, the **SVM model achieved perfect recall (100%) for malignant cases**.
