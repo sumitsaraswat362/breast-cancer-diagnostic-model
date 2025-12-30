@@ -71,7 +71,24 @@ It was generated using stratified 5-fold cross-validation to ensure robustness a
 
 - Mean ROC-AUC: **0.9917
 
+
+## Comparative Model Analysis
+
+Multiple machine learning models were evaluated using identical data splits
+and evaluation metrics, including Logistic Regression, Support Vector
+Machine (SVM), Random Forest, and a Multi-Layer Perceptron (MLP).
+
+While Random Forest achieved the highest overall accuracy, the SVM model
+demonstrated perfect recall for malignant cases. In clinical diagnostics,
+false negatives (missed malignant tumors) are significantly more dangerous
+than false positives, as they may delay life-saving treatment.
+
+For this reason, recall for malignant cases was prioritized over raw
+accuracy. Based on this clinical consideration, the SVM model emerges as
+the most reliable classifier in this study.
 ---
+![Model Comparison](results/model_comparison.png)
+
 
 ## Example Prediction
 
