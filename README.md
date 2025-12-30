@@ -61,6 +61,16 @@ Features with higher coefficient magnitudes include:
 
 These features are commonly discussed in clinical literature related to tumor morphology and diagnostic assessment.
 
+
+### ROC Curve (Cross-Validated)
+
+The ROC curve below visualizes the model’s ability to distinguish between malignant and benign tumors across different classification thresholds.  
+It was generated using stratified 5-fold cross-validation to ensure robustness across class distributions.
+
+![ROC Curve](results/roc_curve.png)
+
+- Mean ROC-AUC: **0.9917
+
 ---
 
 ## Example Prediction
