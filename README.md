@@ -31,7 +31,7 @@ Representative features include:
 - Concavity and concave points  
 - Perimeter and area statistics  
 
-This dataset is widely used as a benchmark for binary classification in medical machine learning research.
+This dataset is a canonical benchmark in diagnostic machine learning research and is primarily used for controlled algorithmic comparison rather than deployment-level validation.
 
 ---
 
@@ -48,6 +48,8 @@ The analysis follows a structured and reproducible workflow:
 7. Visualization of diagnostic performance  
 
 Initial experimentation focused on **Logistic Regression** due to its interpretability, followed by a comparative study with more complex models.
+
+All preprocessing, model fitting, and evaluation steps were performed strictly within the training folds to prevent information leakage between training and evaluation data.
 
 ---
 
@@ -88,7 +90,7 @@ classification.
 
 ### Key Findings
 
-While **Random Forest** achieved the highest overall accuracy, the **SVM model achieved perfect recall (100%) for malignant cases**.
+While Random Forest achieved the highest overall accuracy, the SVM model achieved the highest recall for malignant cases on the internal test split, minimizing false negatives under the selected decision threshold.
 
 In clinical diagnostics:
 - A **False Negative** (malignant predicted as benign) can delay or prevent life-saving treatment  
@@ -111,10 +113,28 @@ A synthetic patient example is included in the notebook to demonstrate the full 
 
 ---
 
+## External Validation and Dataset Shift Analysis
+
+To assess the generalizability of the trained models beyond the development cohort, an external validation attempt was conducted using independently sourced open breast cancer datasets.
+
+Multiple candidate datasets were evaluated, including publicly available CSV datasets from Kaggle and the UCI Machine Learning Repository. During this process, two critical challenges were identified:
+	1.	Dataset Identity and Leakage Risk
+Certain external files (e.g., commonly shared data.csv versions on Kaggle) were found to be numerically identical to the original Wisconsin Diagnostic Breast Cancer (WDBC) dataset after column alignment. Using such datasets for external validation would introduce severe data leakage, as the model would be evaluated on samples it had effectively already seen during training. These datasets were therefore explicitly excluded from validation.
+	2.	Dataset Shift and Feature Incompatibility
+Truly independent datasets (e.g., Coimbra Breast Cancer Dataset, SEER-based clinical datasets) exhibited substantial differences in feature definitions, data distributions, and patient cohorts. These datasets contain anthropometric, biochemical, or demographic variables rather than imaging-derived morphological features, making them incompatible with the trained models without extensive feature re-engineering.
+
+When tested on mismatched datasets, model performance degraded or became uninterpretable, which is an expected outcome under covariate shift and domain mismatch. This result highlights a key limitation in medical machine learning: models trained on highly curated benchmark datasets may not generalize across heterogeneous clinical populations without domain adaptation or retraining.
+
+Key takeaway:
+The absence of a suitable, feature-aligned external cohort prevents valid external performance claims. Rather than forcing unreliable validation, this limitation is documented transparently to avoid misleading conclusions.
+
+This analysis reinforces the importance of dataset provenance, feature consistency, and cohort alignment when developing machine learning models for clinical decision support.
+
+
 ## Limitations
 
 - The dataset is a benchmark dataset and does not reflect real hospital deployment data  
-- No external validation cohort was used  
+- No feature-aligned external cohort was available that would allow valid out-of-distribution evaluation without introducing data leakage or     domain mismatch   
 - Feature extraction is predefined and not learned from raw images  
 - This project is intended for **educational and research purposes only**  
 - The models must **not** be used for real medical diagnosis  
@@ -124,7 +144,7 @@ A synthetic patient example is included in the notebook to demonstrate the full 
 ## Future Work
 
 Planned improvements include:
-- Explainable AI analysis using SHAP or LIME  
+- Extended explainability analysis, including class-conditional SHAP stability, interaction effects, and clinician-oriented feature         attribution summaries    
 - Feature-to-clinical interpretation mapping  
 - Evaluation on additional open medical datasets (CSV format)  
 - Ensemble modeling and threshold optimization  
